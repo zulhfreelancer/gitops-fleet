@@ -1,0 +1,25 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: podinfo
+  namespace: default
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - "podinfo.user5.workshop.gimlet.io"
+      secretName: tls-podinfo
+  rules:
+    - host: "podinfo.user5.workshop.gimlet.io"
+      http:
+        paths:
+          - path: "/"
+            pathType: "Prefix"
+            backend:
+              service:
+                name: podinfo
+                port:
+                  number: 9898
